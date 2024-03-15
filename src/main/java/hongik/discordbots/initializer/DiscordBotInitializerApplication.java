@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class DiscordBotInitializerApplication {
 
 	public static void main(String[] args) {
-		System.out.println("test");
 		SpringApplication.run(DiscordBotInitializerApplication.class, args);
 	}
 
