@@ -1,14 +1,11 @@
 package hongik.discordbots.initializer.controller;
-
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/test")
 public class TestController {
 
@@ -19,8 +16,4 @@ public class TestController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("")
-    public String hello() {
-        return "hello";
-    }
 }
