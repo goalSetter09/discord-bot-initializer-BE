@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Discord Bot Initializer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .section-container {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 10px;
+            flex-basis: 48%;
+        }
+
+        .language-option, .dependency-option {
+            background-color: #f0f0f0;
+            border: 1px solid #d1d1d1;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-block;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .language-option:hover, .dependency-option:hover {
+            background-color: #e7e7e7;
+        }
+
+        .language-input, .dependency-input {
+            display: none;
+        }
+
+        .language-input:checked + .language-option,
+        .dependency-input:checked + .dependency-option {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .submit-button {
+            display: block;
+            width: 20%;
+            padding: 10px 0;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 20px auto;
+        }
+
+        .submit-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Discord Bot Initializer</h1>
+
+<form action="/download" method="get">
+    <div class="container">
+        <div class="section-container">
+            <label>Programming Language:</label>
+            <div>
+                <input type="radio" id="python" name="programmingLanguage" value="Python" class="language-input">
+                <label for="python" class="language-option">Python</label>
+
+                <input type="radio" id="javascript" name="programmingLanguage" value="JavaScript" class="language-input">
+                <label for="javascript" class="language-option">JavaScript</label>
+
+                <input type="radio" id="java" name="programmingLanguage" value="Java" class="language-input">
+                <label for="java" class="language-option">Java</label>
+            </div>
+        </div>
+        <div class="section-container">
+            <label>Dependencies:</label>
+            <div>
+                <input type="checkbox" id="spring-web" name="dependencies" value="SpringWeb" class="dependency-input">
+                <label for="spring-web" class="dependency-option">Spring Web</label>
+
+                <input type="checkbox" id="spring-data-jpa" name="dependencies" value="SpringDataJPA" class="dependency-input">
+                <label for="spring-data-jpa" class="dependency-option">Spring Data JPA</label>
+
+                <input type="checkbox" id="spring-security" name="dependencies" value="SpringSecurity" class="dependency-input">
+                <label for="spring-security" class="dependency-option">Spring Security</label>
+
+                <input type="checkbox" id="testBot1" name="dependencies" value="testBot1" class="dependency-input">
+                <label for="testBot1" class="dependency-option">testBot1</label>
+            </div>
+        </div>
+    </div>
+    <button type="submit" class="submit-button">확인</button>
+</form>
+
+</body>
+</html>
