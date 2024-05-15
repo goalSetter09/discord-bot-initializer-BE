@@ -42,15 +42,30 @@ public class FileDownloadService {
     public Resource createCombinedPythonFile(List<String> dependencies, String programmingLanguage) throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
+        // Add the contents of the header.py file first
+        Path headerPath = Paths.get("src/main/resources/static/", programmingLanguage, "header.py").toAbsolutePath().normalize();
+        if (Files.exists(headerPath)) {
+            byte[] headerBytes = Files.readAllBytes(headerPath);
+            outputStream.write(headerBytes);
+            outputStream.write("\n".getBytes());  // Add a newline to separate the header from the following content
+        }
+
+        // Iterate over the dependency files and add their contents
         for (String dependency : dependencies) {
             Path filePath = Paths.get("src/main/resources/static/", programmingLanguage, dependency + ".py").toAbsolutePath().normalize();
             if (Files.exists(filePath)) {
-                // Read all bytes from the file
                 byte[] fileBytes = Files.readAllBytes(filePath);
                 outputStream.write(fileBytes);
-                // Write a newline character after each file's content to ensure separation
-                outputStream.write("\n".getBytes());
+                outputStream.write("\n".getBytes());  // Add a newline to separate each file's content
             }
+        }
+
+        // Add the contents of the footer.py file last
+        Path footerPath = Paths.get("src/main/resources/static/", programmingLanguage, "footer.py").toAbsolutePath().normalize();
+        if (Files.exists(footerPath)) {
+            byte[] footerBytes = Files.readAllBytes(footerPath);
+            outputStream.write(footerBytes);
+            outputStream.write("\n".getBytes());  // Add a newline to separate the footer from the previous content
         }
 
         return new ByteArrayResource(outputStream.toByteArray());
