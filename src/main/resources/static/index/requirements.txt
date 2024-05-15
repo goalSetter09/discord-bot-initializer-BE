@@ -1,0 +1,4 @@
+discord.py[voice]
+python-dotenv
+
+# python3 -m pip install -U -r requirements.txt
