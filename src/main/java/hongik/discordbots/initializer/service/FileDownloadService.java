@@ -17,32 +17,19 @@ import java.util.List;
 @Service
 public class FileDownloadService {
 
+    // 이렇게 실행되는 서비스를 추후에 interface를 구현하는 식으로 변경할 예정(예: FileService 라는 인터페이스를 PythonFileService가 구현)
     private final PythonFileService pythonFileService;
-    private final FileResourceService fileResourceService;
 
-//    public Resource createDependenciesZip(String programmingLanguage, List<String> dependencies) throws IOException {
-//        if (dependencies.isEmpty()) {
-//            throw new IllegalArgumentException("No dependencies provided");
-//        }
-//
-//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//        try (ZipOutputStream zos = new ZipOutputStream(baos)) {
-//            for (String dependency : dependencies) {
-//                String fileName = dependency + ".zip";
-//                Path file = Paths.get("src/main/resources/static/" + programmingLanguage + "/" + fileName).toAbsolutePath().normalize();
-//
-//                if (Files.exists(file)) {
-//                    zos.putNextEntry(new ZipEntry(file.getFileName().toString()));
-//                    Files.copy(file, zos);
-//                    zos.closeEntry();
-//                }
-//            }
-//            zos.finish();
-//        }
-//        return new ByteArrayResource(baos.toByteArray());
-//    }
+    public FileDownloadResponse generateDownloadFile(String programmingLanguage, List<String> dependencies) throws IOException{
+        if (programmingLanguage.equals("Python")) {
+            return pythonFileService.createPythonBotZip(dependencies);
+        } else {
+            // 이 부분 아직 실행되지 않음
+            return pythonFileService.createDependenciesZip(programmingLanguage, dependencies);
+        }
+    }
 
-
+    // 이 매서드는 아직 실행되지 않음
     public Resource createCombinedPythonFile(List<String> dependencies, String programmingLanguage) throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
@@ -75,12 +62,4 @@ public class FileDownloadService {
         return new ByteArrayResource(outputStream.toByteArray());
     }
 
-
-    public FileDownloadResponse generateDownloadFile(String programmingLanguage, List<String> dependencies) throws IOException{
-        if (programmingLanguage.equals("Python")) {
-            return pythonFileService.createPythonBotZip(dependencies);
-        } else {
-            return fileResourceService.createDependenciesZip(programmingLanguage, dependencies);
-        }
-    }
 }
