@@ -3,6 +3,8 @@ package hongik.discordbots.initializer.controller;
 import hongik.discordbots.initializer.dto.FileDownloadResponse;
 import hongik.discordbots.initializer.service.FileDownloadService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,13 +21,14 @@ public class FileDownloadController {
     private final FileDownloadService fileDownloadService;
 
     @GetMapping("/download")
-    public ResponseEntity<byte[]> downloadFile(
+    public ResponseEntity<Resource> downloadFile(
             @RequestParam("programmingLanguage") String programmingLanguage,
             @RequestParam("dependencies") List<String> dependencies) throws IOException {
         FileDownloadResponse response = fileDownloadService.generateDownloadFile(programmingLanguage, dependencies);
+        ByteArrayResource resource = new ByteArrayResource(response.getFileData());
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + response.getFilename() + "\"")
                 .contentType(MediaType.parseMediaType(response.getContentType()))
-                .body(response.getFileData());
+                .body(resource);
     }
 }
