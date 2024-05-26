@@ -52,24 +52,24 @@ public class PythonFileService {
     }
 
     // 원하는 기능을 가진 파이썬 봇 파일 생성하는 매서드
+
     private ByteArrayResource createPythonBotFile(List<String> dependencies) {
-        // Load the contents of each Python file
+        // Load the contents of the header and footer Python files
         String header = loadFileContent("src/main/resources/static/Python/header.py");
         String footer = loadFileContent("src/main/resources/static/Python/footer.py");
 
-        // Combine the contents based on the dependencies
+        // Initialize the main Python content with the header
         StringBuilder mainPyContent = new StringBuilder();
         mainPyContent.append(header).append("\n");
 
-        // 이 부분은 추후에 바꿔야 할 듯 이름을 매개변수로 받는 매서드 생성해서
-        if (dependencies.contains("pingpong")) {
-            mainPyContent.append(loadFileContent("src/main/resources/static/Python/pingpong.py")).append("\n");
+        // 매개변수로 수정
+        // Dynamically append the content of each dependency file
+        for (String dependency : dependencies) {
+            String filePath = "src/main/resources/static/Python/" + dependency + ".py";
+            mainPyContent.append(loadFileContent(filePath)).append("\n");
         }
 
-        if (dependencies.contains("say")) {
-            mainPyContent.append(loadFileContent("src/main/resources/static/Python/say.py")).append("\n");
-        }
-
+        // Append the footer at the end
         mainPyContent.append(footer);
 
         return new ByteArrayResource(mainPyContent.toString().getBytes());

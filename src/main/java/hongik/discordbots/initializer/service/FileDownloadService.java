@@ -19,11 +19,15 @@ public class FileDownloadService {
 
     // 이렇게 실행되는 서비스를 추후에 interface를 구현하는 식으로 변경할 예정(예: FileService 라는 인터페이스를 PythonFileService가 구현)
     private final PythonFileService pythonFileService;
-
+    private final JavaFileService javaFileService;
     public FileDownloadResponse generateDownloadFile(String programmingLanguage, List<String> dependencies) throws IOException{
         if (programmingLanguage.equals("Python")) {
             return pythonFileService.createPythonBotZip(dependencies);
-        } else {
+        }
+        else if(programmingLanguage.equals("Java")){
+            return javaFileService.createJavaBotZip(dependencies);
+        }
+        else {
             // 이 부분 아직 실행되지 않음
             return pythonFileService.createDependenciesZip(programmingLanguage, dependencies);
         }
