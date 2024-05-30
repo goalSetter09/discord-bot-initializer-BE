@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <title>Discord Bot Initializer</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f8f9fa;
@@ -13,15 +15,39 @@
         }
 
         .header {
-            background-color: #3b5998;
-            padding: 20px;
-            text-align: center;
-            color: white;
+            background-color: #ffffff;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid #e0e0e0;
         }
 
         .header h1 {
             margin: 0;
-            font-size: 2.5em;
+            font-size: 1.5em;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .logo {
+            height: 50px;
+        }
+
+        .nav-bar {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-bar a {
+            color: #333;
+            text-decoration: none;
+            padding: 10px 20px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-bar a:hover {
+            background-color: #f0f0f0;
         }
 
         .container {
@@ -45,6 +71,7 @@
         .section-title {
             font-size: 1.2em;
             margin-bottom: 10px;
+            font-weight: bold;
         }
 
         .options {
@@ -53,64 +80,14 @@
         }
 
         .option {
-            background-color: #f0f0f0;
-            border: 1px solid #d1d1d1;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            display: inline-block;
-            margin: 5px;
-            transition: background-color 0.3s, color 0.3s;
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+            margin-bottom: 10px;
         }
 
-        .option:hover {
-            background-color: #e7e7e7;
-        }
-
-        .input-hidden {
-            display: none;
-        }
-
-        .input-hidden:checked + .option {
-            background-color: #4CAF50;
-            color: white;
-        }
-
-        .submit-button {
-            display: block;
-            width: 100%;
-            padding: 15px 0;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1.2em;
-            margin-top: 20px;
-            transition: background-color 0.3s;
-        }
-
-        .submit-button:hover {
-            background-color: #45a049;
-        }
-
-        .chat-button {
-            display: block;
-            width: 200px;
-            margin: 20px auto;
-            padding: 12px 0;
-            background-color: #007BFF;
-            color: white;
-            text-align: center;
-            text-decoration: none;
-            border-radius: 5px;
-            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
-            transition: background-color 0.3s, box-shadow 0.3s;
-        }
-
-        .chat-button:hover {
-            background-color: #0056b3;
-            box-shadow: 0 6px 12px rgba(0, 86, 179, 0.3);
+        .option input {
+            margin-right: 10px;
         }
 
         @media (max-width: 768px) {
@@ -118,58 +95,102 @@
                 padding: 10px;
             }
 
-            .submit-button {
-                width: 100%;
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
             }
 
-            .chat-button {
-                width: 80%;
+            .nav-bar {
+                margin-top: 10px;
+                width: 100%;
+                justify-content: space-around;
             }
+
+            .nav-bar a {
+                padding: 10px;
+                flex: 1;
+                text-align: center;
+            }
+        }
+
+        .generate-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 200px;
+            padding: 10px 0;
+            background-color: white;
+            color: black;
+            border: 2px solid black;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 20px auto 0;
+            text-align: center;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .generate-button:hover {
+            background-color: black;
+            color: white;
         }
     </style>
 </head>
 <body>
 
 <div class="header">
-    <h1>Discord Bot Initializer</h1>
+    <h1 onclick="location.href='/'">Discord Bot Initializer</h1>
+    <div class="nav-bar">
+        <a href="/home"><img src="logo.svg" alt="Logo" class="logo"></a>
+        <a href="/features">Features</a>
+        <a href="/contact">Contact</a>
+        <a href="/about">About</a>
+    </div>
 </div>
 
 <div class="container">
     <form action="/download" method="get">
         <div class="section-container">
-            <div class="section-title">Programming Language:</div>
+            <div class="section-title">Programming Language</div>
             <div class="options">
-                <input type="radio" id="python" name="programmingLanguage" value="Python" class="input-hidden">
-                <label for="python" class="option">Python</label>
-
-                <input type="radio" id="javascript" name="programmingLanguage" value="JavaScript" class="input-hidden">
-                <label for="javascript" class="option">JavaScript</label>
-
-                <input type="radio" id="java" name="programmingLanguage" value="Java" class="input-hidden">
-                <label for="java" class="option">Java</label>
+                <div class="option">
+                    <input type="radio" id="python" name="programmingLanguage" value="Python">
+                    <label for="python">Python</label>
+                </div>
+                <div class="option">
+                    <input type="radio" id="javascript" name="programmingLanguage" value="JavaScript">
+                    <label for="javascript">JavaScript</label>
+                </div>
+                <div class="option">
+                    <input type="radio" id="java" name="programmingLanguage" value="Java">
+                    <label for="java">Java</label>
+                </div>
             </div>
         </div>
         <div class="section-container">
-            <div class="section-title">Dependencies:</div>
+            <div class="section-title">Dependencies</div>
             <div class="options">
-                <input type="checkbox" id="pingpong" name="dependencies" value="pingpong" class="input-hidden">
-                <label for="pingpong" class="option">pingpong</label>
-
-                <input type="checkbox" id="say" name="dependencies" value="say" class="input-hidden">
-                <label for="say" class="option">say</label>
-
-                <input type="checkbox" id="spring-security" name="dependencies" value="SpringSecurity" class="input-hidden">
-                <label for="spring-security" class="option">Spring Security</label>
-
-                <input type="checkbox" id="testBot1" name="dependencies" value="testBot1" class="input-hidden">
-                <label for="testBot1" class="option">testBot1</label>
+                <div class="option">
+                    <input type="checkbox" id="pingpong" name="dependencies" value="pingpong">
+                    <label for="pingpong">pingpong</label>
+                </div>
+                <div class="option">
+                    <input type="checkbox" id="say" name="dependencies" value="say">
+                    <label for="say">say</label>
+                </div>
+                <div class="option">
+                    <input type="checkbox" id="springsecurity" name="dependencies" value="SpringSecurity">
+                    <label for="springsecurity">Spring Security</label>
+                </div>
+                <div class="option">
+                    <input type="checkbox" id="testBot1" name="dependencies" value="testBot1">
+                    <label for="testBot1">testBot1</label>
+                </div>
             </div>
         </div>
-        <button type="submit" class="submit-button">확인</button>
+        <button type="submit" class="generate-button">GENERATE ⌘ + ↵</button>
     </form>
 </div>
-
-<a href="http://localhost:8080/chat/chatList" class="chat-button">익명채팅</a>
 
 </body>
 </html>
