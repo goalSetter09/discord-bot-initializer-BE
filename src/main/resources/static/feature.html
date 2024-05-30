@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Discord Bot Initializer</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background-color: #3b5998;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .feature {
+            background-color: #f8f9fa;
+            padding: 20px;
+            flex: 1 1 calc(50% - 20px);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature h2 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .feature p {
+            margin: 0;
+        }
+
+        .footer {
+            background-color: #f1f1f1;
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .footer p {
+            margin: 0;
+            color: #666;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .start-button {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            color: white;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .start-button:hover {
+            background-color: #45a049;
+        }
+
+        @media (max-width: 768px) {
+            .feature {
+                flex: 1 1 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Discord Bot Initializer</h1>
+</div>
+
+<div class="container">
+    <div class="features">
+        <div class="feature">
+            <h2>Greetings</h2>
+            <p>Create bots that can send personalized welcome messages to new members in your server.</p>
+        </div>
+        <div class="feature">
+            <h2>Messages</h2>
+            <p>Enable bots to manage server messages, including auto-responses, moderation, and more.</p>
+        </div>
+        <div class="feature">
+            <h2>YouTube Integration</h2>
+            <p>Build bots that can fetch and share YouTube videos directly within your Discord server.</p>
+        </div>
+        <div class="feature">
+            <h2>Music Playback</h2>
+            <p>Integrate bots that can play music from various sources like YouTube, Spotify, etc.</p>
+        </div>
+        <div class="feature">
+            <h2>Role Management</h2>
+            <p>Develop bots that can assign roles to members based on specific triggers or commands.</p>
+        </div>
+    </div>
+
+    <div class="button-container">
+        <button class="start-button">Get Started</button>
+    </div>
+</div>
+
+<div class="footer">
+    <p>&copy; 2024 Discord Bot Initializer. All rights reserved.</p>
+</div>
+
+</body>
+</html>
