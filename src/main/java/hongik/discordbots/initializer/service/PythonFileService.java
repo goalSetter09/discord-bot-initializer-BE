@@ -18,6 +18,9 @@ import java.util.zip.ZipOutputStream;
 @RequiredArgsConstructor
 public class PythonFileService {
 
+    private static final String fileBasePath = "src/main/resources/static/index/";
+    private static String[] additionalFiles = {"install_requirements.bat", "install_requirements.sh", "requirements.txt", "settings.py"};
+
     // 실행파일 + 봇파일 등 포함해서 zip으로 만들어주는 매서드
     public FileDownloadResponse createPythonBotZip(List<String> dependencies) {
         try {
@@ -32,14 +35,12 @@ public class PythonFileService {
                 zos.closeEntry();
 
                 // 이 부분 하나의 클래스로 선언해서 불러오는 식으로 변경해야 할 듯
-                String[] additionalFiles = {"install_requirements.bat", "install_requirements.sh", "requirements.txt", "settings.py"};
-                String basePath = "src/main/resources/static/index/";
 
                 for (String fileName : additionalFiles) {
-                    Path filePath = Paths.get(basePath, fileName).toAbsolutePath().normalize();
+                    Path filePath = Paths.get(fileBasePath, fileName).toAbsolutePath().normalize();
                     if (Files.exists(filePath)) {
                         zos.putNextEntry(new ZipEntry(fileName));
-                        Files.copy(filePath, zos);
+                        Files.copy(filePath, zos); // 파일의 모든 내용을 output stream으로 복사
                         zos.closeEntry();
                     }
                 }
