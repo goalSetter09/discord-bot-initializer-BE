@@ -66,5 +66,5 @@ jobs:
         run: aws deploy create-deployment
           --application-name initializer-server
           --deployment-config-name CodeDeployDefault.AllAtOnce
-          --deployment-group-name Production
+          --deployment-group-name InitializerServerInstances
           --s3-location bucket=initializer-server,bundleType=tgz,key=$GITHUB_SHA.tar.gz
