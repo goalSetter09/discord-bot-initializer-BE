@@ -22,14 +22,23 @@ jobs:
           distribution: temurin
           java-version: 17
 
+#      - name: application.yml 파일 만들기
+#        uses: microsoft/variable-substitution@v1
+#        with:
+#          files: ${{ env.BASE_RESOURCE_PATH }}
+#        env:
+#          spring.datasource.url: ${{ secrets.DB_URI }}
+#          spring.datasource.username: ${{ secrets.DB_USERNAME }}
+#          spring.datasource.password: ${{ secrets.DB_PASSWORD }}
       - name: application.yml 파일 만들기
-        uses: microsoft/variable-substitution@v1
-        with:
-          files: ${{ env.BASE_RESOURCE_PATH }}
+        run: |
+          echo "spring.datasource.url: ${DB_URI}" >> ${{ env.BASE_RESOURCE_PATH }}
+          echo "spring.datasource.username: ${DB_USERNAME}" >> ${{ env.BASE_RESOURCE_PATH }}
+          echo "spring.datasource.password: ${DB_PASSWORD}" >> ${{ env.BASE_RESOURCE_PATH }}
         env:
-          spring.datasource.url: ${{ secrets.DB_URI }}
-          spring.datasource.username: ${{ secrets.DB_USERNAME }}
-          spring.datasource.password: ${{ secrets.DB_PASSWORD }}
+          DB_URI: ${{ secrets.DB_URI }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
       - name: gradlew에 실행 권한 부여하기
         run: chmod +x ./gradlew
 
