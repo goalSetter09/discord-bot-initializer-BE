@@ -19,6 +19,7 @@ import java.util.zip.ZipOutputStream;
 public class PythonFileService {
 
     private static final String fileBasePath = "src/main/resources/static/index/";
+    private static final String pythonBasePath = "src/main/resources/static/Python/";
     private static String[] additionalFiles = {"install_requirements.bat", "install_requirements.sh", "requirements.txt", "settings.py"};
 
     // 실행파일 + 봇파일 등 포함해서 zip으로 만들어주는 매서드
@@ -53,11 +54,10 @@ public class PythonFileService {
     }
 
     // 원하는 기능을 가진 파이썬 봇 파일 생성하는 매서드
-
     private ByteArrayResource createPythonBotFile(List<String> dependencies) {
         // Load the contents of the header and footer Python files
-        String header = loadFileContent("src/main/resources/static/Python/header.py");
-        String footer = loadFileContent("src/main/resources/static/Python/footer.py");
+        String header = loadFileContent(pythonBasePath + "header.py");
+        String footer = loadFileContent(pythonBasePath + "footer.py");
 
         // Initialize the main Python content with the header
         StringBuilder mainPyContent = new StringBuilder();
@@ -66,7 +66,7 @@ public class PythonFileService {
         // 매개변수로 수정
         // Dynamically append the content of each dependency file
         for (String dependency : dependencies) {
-            String filePath = "src/main/resources/static/Python/" + dependency + ".py";
+            String filePath = pythonBasePath + dependency + ".py";
             mainPyContent.append(loadFileContent(filePath)).append("\n");
         }
 
