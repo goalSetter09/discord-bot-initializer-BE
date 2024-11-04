@@ -36,6 +36,11 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.14.2'
 	// 2024.04.29 채팅관련
+
+	implementation 'jakarta.xml.bind:jakarta.xml.bind-api:3.0.1'
+	implementation 'org.glassfish.jaxb:jaxb-runtime:3.0.1'
+
+	implementation 'net.bytebuddy:byte-buddy:1.12.20' // 최신 버전으로 설정
 }
 
 tasks.named('test') {
