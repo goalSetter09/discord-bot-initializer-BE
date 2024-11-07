@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Discord Bot Initializer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .bot-item {
+            margin-bottom: 10px;
+        }
+        .bot-item label {
+            margin-left: 5px;
+        }
+        .submit-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+<h1>Select Bots to Download</h1>
+<div class="download-section">
+    <h2>Download Combined Python ZIP</h2>
+    <form action="/download" method="post">
+        <div>
+            {{#bots}}
+                <div class="bot-item">
+                    <input type="checkbox" name="dependencies" value="{{id}}" id="bot-{{id}}-combined">
+                    <label for="bot-{{id}}-combined">
+                        <strong>{{name}}</strong> - {{description}}
+                    </label>
+                </div>
+            {{/bots}}
+            {{^bots}}
+                <p>No bots available.</p>
+            {{/bots}}
+        </div>
+        <button type="submit" class="submit-button">Download Combined Python ZIP</button>
+    </form>
+</div>
+</body>
+</html>
