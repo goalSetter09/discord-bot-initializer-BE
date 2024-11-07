@@ -1,98 +1,73 @@
 package hongik.discordbots.initializer.service;
 
-import hongik.discordbots.initializer.dto.FileDownloadResponse;
-import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.stereotype.Service;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.stereotype.Service;
+
+import hongik.discordbots.initializer.dto.FileDownloadResponse;
+import hongik.discordbots.initializer.s3.S3FileService;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class PythonFileService {
 
-    private static final String fileBasePath = "static/index/";
-    private static final String pythonBasePath = "static/Python/";
-    private static final String[] additionalFiles = {"install_requirements.bat", "install_requirements.sh", "requirements.txt", "settings.py"};
+	private final S3FileService s3FileService;
+	private static final String S3_BASE_PATH = "discord-bot/"; // S3 상의 기본 경로 설정
+	private static final String[] additionalFiles = {"install_requirements.bat", "install_requirements.sh",
+		"requirements.txt", "settings.py"};
 
-    // 실행 파일 + 봇 파일 등 포함해서 zip으로 만들어주는 메서드
-    public FileDownloadResponse createPythonBotZip(List<String> dependencies) {
-        try {
-            // 여기서 실질적인 파이썬 봇 파일 생성
-            ByteArrayResource mainPyResource = createPythonBotFile(dependencies);
+	// Combined Python ZIP 파일 생성
+	public FileDownloadResponse createCombinedPythonZip(List<String> s3Paths) throws IOException {
+		ByteArrayResource mainPyResource = createCombinedPythonBotFile(s3Paths);
+		byte[] zipData = createZipWithAdditionalFiles(mainPyResource);
 
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            try (ZipOutputStream zos = new ZipOutputStream(baos)) {
-                // main.py 파일 추가
-                zos.putNextEntry(new ZipEntry("main.py"));
-                zos.write(mainPyResource.getByteArray());
-                zos.closeEntry();
+		return new FileDownloadResponse("python_combined_environment.zip", "application/zip", zipData);
+	}
 
-                // 추가 파일들을 ZIP에 포함
-                for (String fileName : additionalFiles) {
-                    ClassPathResource resource = new ClassPathResource(fileBasePath + fileName);
-                    if (resource.exists()) {
-                        zos.putNextEntry(new ZipEntry(fileName));
-                        try (InputStream inputStream = resource.getInputStream()) {
-                            inputStream.transferTo(zos); // InputStream을 ZipOutputStream으로 복사
-                        }
-                        zos.closeEntry();
-                    }
-                }
-                zos.finish();
-            }
-            return new FileDownloadResponse("python_environment.zip", "application/zip", baos.toByteArray());
-        } catch (Exception e) {
-            throw new RuntimeException("Error creating Python environment ZIP", e);
-        }
-    }
+	// main.py 파일 생성 (header, S3 내용, footer 포함)
+	private ByteArrayResource createCombinedPythonBotFile(List<String> s3Paths) throws IOException {
+		String header = s3FileService.getFileContent(S3_BASE_PATH + "header.py");
+		String footer = s3FileService.getFileContent(S3_BASE_PATH + "footer.py");
 
-    // 원하는 기능을 가진 파이썬 봇 파일 생성하는 메서드
-    private ByteArrayResource createPythonBotFile(List<String> dependencies) {
-        // Load the contents of the header and footer Python files
-        String header = loadFileContent(pythonBasePath + "header.py");
-        String footer = loadFileContent(pythonBasePath + "footer.py");
+		StringBuilder mainPyContent = new StringBuilder();
+		mainPyContent.append(header).append("\n");
 
-        // Initialize the main Python content with the header
-        StringBuilder mainPyContent = new StringBuilder();
-        mainPyContent.append(header).append("\n");
+		for (String s3Path : s3Paths) {
+			String botContent = s3FileService.getFileContent(S3_BASE_PATH + s3Path);
+			mainPyContent.append(botContent).append("\n");
+		}
 
-        // 매개변수로 수정
-        // Dynamically append the content of each dependency file
-        for (String dependency : dependencies) {
-            String filePath = pythonBasePath + dependency + ".py";
-            mainPyContent.append(loadFileContent(filePath)).append("\n");
-        }
+		mainPyContent.append(footer);
+		return new ByteArrayResource(mainPyContent.toString().getBytes());
+	}
 
-        // Append the footer at the end
-        mainPyContent.append(footer);
+	// ZIP 파일 생성 및 추가 파일 포함
+	private byte[] createZipWithAdditionalFiles(ByteArrayResource mainPyResource) throws IOException {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ZipOutputStream zos = new ZipOutputStream(baos);
 
-        return new ByteArrayResource(mainPyContent.toString().getBytes());
-    }
+		addFileToZip(zos, mainPyResource, "main.py");
 
-    // 봇 파일 내부에 추가할 내용 불러오는 메서드
-    private String loadFileContent(String filePath) {
-        try {
-            ClassPathResource resource = new ClassPathResource(filePath);
-            try (InputStream inputStream = resource.getInputStream()) {
-                return new String(inputStream.readAllBytes());
-            }
-        } catch (IOException e) {
-            throw new RuntimeException("Error reading file: " + filePath, e);
-        }
-    }
+		for (String fileName : additionalFiles) {
+			String fileContent = s3FileService.getFileContent(S3_BASE_PATH + fileName);
+			if (fileContent != null) {
+				addFileToZip(zos, new ByteArrayResource(fileContent.getBytes()), fileName);
+			}
+		}
 
-    // 이 메서드는 아직 실행되지 않음
-    public FileDownloadResponse createDependenciesZip(String programmingLanguage, List<String> dependencies) {
-        // Create a zip file containing the dependencies for the specified programming language
-        // This is a placeholder implementation
-        byte[] data = "".getBytes();
-        return new FileDownloadResponse(programmingLanguage + "-dependencies.zip", "application/zip", data);
-    }
+		zos.finish();
+		return baos.toByteArray();
+	}
+
+	private void addFileToZip(ZipOutputStream zos, ByteArrayResource resource, String fileName) throws IOException {
+		zos.putNextEntry(new ZipEntry(fileName));
+		zos.write(resource.getByteArray());
+		zos.closeEntry();
+	}
 }
