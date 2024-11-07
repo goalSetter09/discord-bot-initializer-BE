@@ -50,6 +50,6 @@ public class FileDownloadController {
 		BotListResponse botList = botService.findAllBots();
 		model.addAttribute("bots", botList.bots());
 		log.info("Retrieved {} bots from the database.", botList.bots().size());
-		return "home";
+		return "home1";
 	}
 }
