@@ -43,9 +43,7 @@ public class S3FileService {
 
 	// S3에서 특정 파일의 내용을 가져오는 메서드
 	public String getFileContent(String s3Path) throws IOException {
-		String s3Key = botDirectoryPrefix + s3Path;
-
-		S3Object s3Object = amazonS3Client.getObject(new GetObjectRequest(bucketName, s3Key));
+		S3Object s3Object = amazonS3Client.getObject(new GetObjectRequest(bucketName, s3Path));
 		InputStream inputStream = s3Object.getObjectContent();
 		return new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
 	}
