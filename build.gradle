@@ -41,6 +41,8 @@ dependencies {
 	implementation 'org.glassfish.jaxb:jaxb-runtime:3.0.1'
 
 	implementation 'net.bytebuddy:byte-buddy:1.12.20' // 최신 버전으로 설정
+
+	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.6.RELEASE'
 }
 
 tasks.named('test') {
