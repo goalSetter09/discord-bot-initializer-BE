@@ -45,7 +45,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Docker 이미지 생성
-        run: docker build -t initializer-server .
+        run: docker build --no-cache -t initializer-server .
 
       - name: Docker 이미지에 Tag 붙이기
         run: docker tag initializer-server ${{ steps.login-ecr.outputs.registry }}/initializer-server:latest
