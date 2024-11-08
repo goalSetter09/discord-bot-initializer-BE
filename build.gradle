@@ -53,10 +53,6 @@ tasks.named('test') {
 
 jar {
     enabled = false
-
-    from('src/main/resources') {
-        include '**/*.*'
-    }
 }
 
 sourceSets {
