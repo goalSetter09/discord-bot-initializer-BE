@@ -31,7 +31,7 @@ jobs:
       - name: gradlew에 실행 권한 부여하기
         run: chmod +x ./gradlew
       - name: 테스트 및 빌드하기
-        run: ./gradlew clean build --scan -x test
+        run: ./gradlew clean build --no-build-cache -x test
 
       - name: AWS Resource에 접근할 수 있게 AWS credentials 설정
         uses: aws-actions/configure-aws-credentials@v4
@@ -45,7 +45,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Docker 이미지 생성
-        run: docker build -t initializer-server .
+        run: docker build --no-cache -t initializer-server .
 
       - name: Docker 이미지에 Tag 붙이기
         run: docker tag initializer-server ${{ steps.login-ecr.outputs.registry }}/initializer-server:latest
