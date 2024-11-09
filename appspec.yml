@@ -6,9 +6,10 @@ files:
     destination: /home/ubuntu/initializer-server
 
 permissions:
-  - object: /
+  - object: scripts/start-server.sh
     owner: ubuntu
     group: ubuntu
+    mode: 755
 
 hooks:
   ApplicationStart:
