@@ -45,7 +45,7 @@ public class FileDownloadController {
 			.body(resource);
 	}
 
-	@GetMapping("/home")
+	@GetMapping("/")
 	public String home(Model model) {
 		BotListResponse botList = botService.findAllBots();
 		model.addAttribute("bots", botList.bots());
