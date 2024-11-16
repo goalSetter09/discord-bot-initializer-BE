@@ -1,9 +1,11 @@
 package hongik.discordbots.initializer.service;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -49,8 +51,7 @@ public class PythonFileService {
 	}
 
 	private String getResourceFileContent(String filePath) throws IOException {
-		ClassPathResource resource = new ClassPathResource(filePath);
-		InputStream inputStream = resource.getInputStream();
+		InputStream inputStream = getClass().getClassLoader().getResourceAsStream(filePath);
 		return new String(inputStream.readAllBytes());
 	}
 
@@ -74,16 +75,20 @@ public class PythonFileService {
 	}
 
 	private void addDirectoryToZip(ZipOutputStream zos, String directoryPath) throws IOException {
-		ClassPathResource directoryResource = new ClassPathResource(directoryPath);
-		File directory = directoryResource.getFile();
-		if (directory.isDirectory()) {
-			for (File file : directory.listFiles()) {
-				String filePath = directoryPath + file.getName();
-				String fileContent = getResourceFileContent(filePath);
-				addFileToZip(zos, new ByteArrayResource(fileContent.getBytes()), filePath);
-			}
+		List<String> resourceFiles = getResourceFiles(directoryPath);
+		for (String fileName : resourceFiles) {
+			String filePath = directoryPath + fileName;
+			String fileContent = getResourceFileContent(filePath);
+			addFileToZip(zos, new ByteArrayResource(fileContent.getBytes()), filePath);
 		}
 	}
+
+	private List<String> getResourceFiles(String path) throws IOException {
+		InputStream is = getClass().getClassLoader().getResourceAsStream(path);
+		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+		return reader.lines().toList();
+	}
+
 
 	// // main.py 파일 생성 (header, S3 내용, footer 포함)
 	// private ByteArrayResource createCombinedPythonBotFile(List<String> s3Paths) throws IOException {
